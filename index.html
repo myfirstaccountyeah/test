@@ -3,21 +3,311 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hello, World!</title>
+  <title>Welcome — Auth</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background: #f7f7f7;
-      color: #111;
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:14px;
+      --shadow: 0 6px 24px rgba(2,6,23,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.06), transparent 10%),
+                  linear-gradient(180deg, #071022 0%, #071525 100%);
+      color:#e6eef6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+    }
+
+    .shell{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    /* left panel - promo/illustration */
+    .promo{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:36px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:20px;
+      box-shadow:var(--shadow);
+      min-height:420px;
+    }
+    .logo{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo .mark{
+      width:44px;height:44px;border-radius:10px;
+      background:linear-gradient(135deg,#60b3ff,#7df3c7);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:#05202a;
+      box-shadow: 0 6px 20px rgba(15,31,44,0.6);
+    }
+    h1{margin:0;font-size:28px;line-height:1.05}
+    p.lead{margin:0;color:var(--muted);max-width:60ch}
+
+    .art{
+      margin-top:auto;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      align-items:center;
+    }
+    .card-stat{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), var(--glass));
+      border-radius:12px;padding:14px;
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .stat-value{font-weight:700;font-size:18px}
+    .stat-label{font-size:13px;color:var(--muted)}
+
+    /* right panel - auth */
+    .auth{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      min-height:420px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .tabs{display:flex;gap:8px}
+    .tab{
+      padding:10px 14px;border-radius:10px;
+      background:transparent;color:var(--muted);
+      border:1px solid transparent;cursor:pointer;font-weight:600;
+    }
+    .tab.active{
+      background:linear-gradient(90deg, rgba(110,231,183,0.12), rgba(96,179,255,0.06));
+      color:var(--accent);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    form{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted)}
+    .input{
+      display:flex;align-items:center;gap:8px;padding:12px;border-radius:10px;
+      background:var(--glass-2);border:1px solid rgba(255,255,255,0.03);
+    }
+    .input input{
+      background:transparent;border:0;outline:none;color:inherit;width:100%;
+      font-size:15px;
+    }
+    .actions{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+    }
+    .btn-primary{
+      background:linear-gradient(90deg,#60b3ff,#7df3c7);
+      color:#05202a;
+    }
+    .btn-ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);
+    }
+    .social{
+      display:flex;gap:10px;
+    }
+
+    .muted-row{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+    .password-row{display:flex;align-items:center;gap:8px}
+    .text-link{color:var(--accent);cursor:pointer;font-weight:600}
+
+    footer{margin-top:auto;color:var(--muted);font-size:13px;text-align:center}
+
+    @media (max-width:960px){
+      .shell{grid-template-columns:1fr;max-width:720px}
+      .promo{order:2}
     }
   </style>
 </head>
 <body>
-  <h1>Hello, World!</h1>
+  <main class="shell" role="main">
+    <section class="promo" aria-hidden="false">
+      <div class="logo" aria-hidden="true">
+        <div class="mark">A</div>
+        <div>
+          <div style="font-weight:700">Acme</div>
+          <div style="font-size:13px;color:var(--muted)">Authentication UI</div>
+        </div>
+      </div>
+
+      <h1>Secure sign in for your workspace</h1>
+      <p class="lead">Fast, accessible, and secure authentication with passwordless or classic email/password. Toggle between sign in and sign up to get started.</p>
+
+      <div class="art" aria-hidden="true">
+        <div class="card-stat">
+          <div class="stat-value">99.99%</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+        <div class="card-stat">
+          <div class="stat-value">100K+</div>
+          <div class="stat-label">Active users</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth" aria-labelledby="auth-heading">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div>
+          <h2 id="auth-heading" style="margin:0">Welcome</h2>
+          <div style="color:var(--muted);font-size:13px">Sign in to continue or create an account</div>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Authentication">
+          <button class="tab active" role="tab" aria-selected="true" data-mode="login">Sign in</button>
+          <button class="tab" role="tab" aria-selected="false" data-mode="signup">Sign up</button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-ghost" id="btn-google" type="button" aria-label="Sign in with Google">
+          <svg width="18" height="18" viewBox="0 0 533.5 544.3" aria-hidden="true"><path fill="#4285F4" d="M533.5 278.4..."></path></svg>
+          Continue with Google
+        </button>
+        <div style="text-align:center;color:var(--muted);font-size:13px">or use your email</div>
+      </div>
+
+      <form id="auth-form" novalidate>
+        <div id="name-field" style="display:none">
+          <label for="name">Full name</label>
+          <div class="input"><input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Doe" /></div>
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <div class="input"><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required /></div>
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <div class="input password-row">
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+            <button type="button" id="pw-toggle" aria-label="Toggle password" class="btn-ghost" style="padding:6px 8px;border-radius:8px;font-weight:600">Show</button>
+          </div>
+        </div>
+
+        <div class="muted-row">
+          <label style="display:flex;align-items:center;gap:8px">
+            <input id="remember" type="checkbox" /> <span style="color:var(--muted);font-size:13px">Remember me</span>
+          </label>
+          <button type="button" class="text-link" id="forgot">Forgot?</button>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" id="submit-btn">Sign in</button>
+          <button class="btn btn-ghost" type="button" id="demo-btn">Try demo account</button>
+        </div>
+
+        <div id="form-message" style="color:#fca5a5;font-size:13px;min-height:18px"></div>
+      </form>
+
+      <footer>
+        By continuing you agree to our <span class="text-link">Terms</span> and <span class="text-link">Privacy</span>.
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const tabs = document.querySelectorAll('.tab');
+      const nameField = document.getElementById('name-field');
+      const form = document.getElementById('auth-form');
+      const submitBtn = document.getElementById('submit-btn');
+      const msg = document.getElementById('form-message');
+      const pw = document.getElementById('password');
+      const pwToggle = document.getElementById('pw-toggle');
+      const forgot = document.getElementById('forgot');
+      const demo = document.getElementById('demo-btn');
+
+      let mode = 'login';
+
+      function setMode(m){
+        mode = m;
+        tabs.forEach(t=> t.classList.toggle('active', t.dataset.mode===m));
+        nameField.style.display = m==='signup' ? 'block' : 'none';
+        submitBtn.textContent = m==='signup' ? 'Create account' : 'Sign in';
+        msg.textContent = '';
+      }
+
+      tabs.forEach(t=>{
+        t.addEventListener('click', ()=> setMode(t.dataset.mode));
+      });
+
+      pwToggle.addEventListener('click', ()=>{
+        const isPwd = pw.type === 'password';
+        pw.type = isPwd ? 'text' : 'password';
+        pwToggle.textContent = isPwd ? 'Hide' : 'Show';
+      });
+
+      forgot.addEventListener('click', ()=> {
+        msg.style.color = '#ffd580';
+        msg.textContent = 'Password reset link would be sent (demo).';
+      });
+
+      demo.addEventListener('click', ()=>{
+        document.getElementById('email').value = 'demo@acme.test';
+        pw.value = 'demopass';
+        msg.style.color = '#9ae6b4';
+        msg.textContent = 'Demo credentials filled.';
+      });
+
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        msg.style.color = '#fca5a5';
+        msg.textContent = '';
+        const email = form.email.value.trim();
+        const password = form.password.value;
+
+        if(!email || !/\S+@\S+\.\S+/.test(email)){
+          msg.textContent = 'Enter a valid email.';
+          return;
+        }
+        if(password.length < 6){
+          msg.textContent = 'Password must be 6+ characters.';
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = (mode==='signup' ? 'Creating...' : 'Signing in...');
+
+        // Simulate async auth
+        setTimeout(()=>{
+          submitBtn.disabled = false;
+          submitBtn.textContent = (mode==='signup' ? 'Create account' : 'Sign in');
+          msg.style.color = '#9ae6b4';
+          msg.textContent = mode==='signup' ? 'Account created (demo).' : 'Signed in (demo).';
+        }, 900);
+      });
+
+      // accessibility: allow Enter to toggle
+      document.addEventListener('keyup', (e)=> {
+        if(e.key === 'Escape') msg.textContent = '';
+      });
+
+      // initial
+      setMode('login');
+    })();
+  </script>
 </body>
 </html>
